@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Cats List</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class= 'container'>
+        <div class = 'row'>
+            <div class = 'col'>
+                {% for message in messages %}
+                    <p class='text-danger'>{{message}}</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class = 'row'>
+            <div class = 'col'>
+                {% for cat in cats %}
+                    <h3>{{cat.id}}: {{cat.name}}</h3>
+                    <h4>{{cat.owner.uname}}</h4>
+                    <h4>Races Won:</h4>
+                    {% for race in cat.wins.all %}
+                    <p>{{race.name}}</p>
+                    {% endfor %}
+                    {% if cat.owner == user %}
+                        <form action='/removeCat/' method='POST'>
+                        {% csrf_token %}
+                        <input type="hidden" name="name" value='{{cat.name}}'>
+                        <input type = 'submit' class='btn btn-danger' value=
+                        'Kill {{cat.name}}'>
+                        </form>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class = 'col'>
+                <form action='/addCat/' method = "POST">
+                    {% csrf_token %}
+                    <span>Name:</span><input type ='text' name='name'>
+                    <input type = 'submit' class = 'btn btn-danger'>
+                </form>
+            </div>
+        </div>
+        <div class = 'row'>
+                <div class = 'col'>
+                    <h1>RACES</h1>
+                    {% for race in races %}
+                        <p class='text-danger'>{{race.name}}</p>
+                        <p>Featuring:</p>
+                        {% for racer in race.racers.all %}
+                        <h4>Number {{racer.id}}: {{racer.name}}</h4>
+                        {% endfor %}
+                        <h6>Winner: {{race.winner.name}}</h6>
+                    {% endfor %}
+                </div>
+                <div class = 'col'>
+                        <form action='/addRace/' method="POST">
+                            {% csrf_token %}
+                            <h3>Name: <input type ='text' name='name'></h3>
+                            <span>Cat1: </span><input type="text" name='cat1'><br>
+                            <span>Cat2: </span><input type="text" name ='cat2'><br>
+                            <span>Cat3: </span><input type="text" name='cat3'><br>
+                            <span>Cat4: </span><input type="text" name ='cat4'><br>
+                            <input type="submit" class='btn btn-secondary'>
+                        </form>
+                    </div>
+            </div>
+    </div>
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
